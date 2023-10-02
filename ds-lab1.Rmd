@@ -1,0 +1,39 @@
+---
+title: "ds-lab1"
+author: "Keyi Kang"
+date: "2023-10-02"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+    fig_height: 4.5
+    fig_width: 8
+  pdf_document:
+    fig_height: 3.5
+    fig_width: 3.5
+  word_document:
+    toc: no
+---
+```{r,echo=FALSE}
+library(medicaldata)
+```
+
+```{r}
+covid_testing
+```
+
+```{r}
+covid <- covid_testing %>% 
+  filter(test_id == "covid") %>% 
+  mutate(result = str_to_title(result))
+covid
+```
+
+
+```{r}
+covid_summary <- covid %>% 
+  summarise(percent_positive = sum(result == "Positive")/length(result))
+covid_summary
+```
+
