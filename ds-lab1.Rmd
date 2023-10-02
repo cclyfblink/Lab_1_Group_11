@@ -38,7 +38,7 @@ covid_summary <- covid %>%
   summarise(percent_positive = sum(result == "Positive")/length(result))
 covid_summary
 ```
-```{r}
+
 ```{r}
 covid_ages <- covid %>% 
   filter(result == "Positive") %>% 
@@ -53,5 +53,27 @@ covid_ages <- covid %>%
     )
 covid_ages
 ```
-```
 
+```{r}
+
+library(ggplot2)
+
+# Create a bar plot using the covid_ages dataframe
+plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
+  geom_bar(fill = "#2ca02c") +  # Change bar colors to #2ca02c
+  theme_minimal() +  # Remove the gray background
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Center the title
+    legend.position = "none",  # Remove the legend
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
+  ) +
+  labs(
+    title = "Positive Tests by Age Group",
+    x = "Age",
+    y = "Number of Positive Tests"
+  )
+
+# Print Plot C
+print(plot_c)
+
+```
