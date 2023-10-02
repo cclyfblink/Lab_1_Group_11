@@ -53,9 +53,29 @@ covid_ages <- covid %>%
     )
 covid_ages
 ```
-
+### Plot2:
 ```{r}
+library(scales) # Load scales to convert y-axis into percentage
 
+# Create a bar plot using ggplot
+plot_b <- ggplot(covid_summary, aes(x=pan_day, y=percent_positive)) +
+  geom_bar(stat="identity", fill = "#2ca02c") +
+  labs(title="Percent of Positive\n Test Results by Day",  # Add a title
+       x="Pandemic Day",  # Change the x-axis label
+       y="Percent Positive Tests"  # Change the y-axis label
+       ) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal() +  # Remove the gray background
+  theme(plot.title = element_text(hjust = 0.5),  # Center the title
+        legend.position = "none"  # Remove the legend
+        )
+
+# Print the plot
+print(plot_b)
+```
+
+### Plot3:
+```{r}
 library(ggplot2)
 
 # Create a bar plot using the covid_ages dataframe
@@ -75,5 +95,4 @@ plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
 
 # Print Plot C
 print(plot_c)
-
 ```
