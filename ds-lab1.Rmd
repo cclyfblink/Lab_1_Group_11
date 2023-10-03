@@ -60,9 +60,9 @@ head(covid_ages)
 plot_a <- ggplot(covid, aes(x = pan_day, fill = result)) + 
   # Make a stacked bar plot of the test results by day
   geom_bar(stat = "count", position = "stack") +
-  # Change the colors using the following hex code colors: #1f77b4, #e377c2 and #2ca02c
-  scale_fill_manual(values = c("#1f77b4", "#e377c2","#2ca02c"), name = "Result") +
-  # Change the labels on the x-axis, y-axis, title, and legend
+  # Change the colors using the following hex code colors: #1f77b4, #e377c2 and #2ca02c, and change the legend's title
+  scale_fill_manual(values = c("#1f77b4", "#e377c2","#2ca02c"), name = "Test Result") +
+  # Change the labels on the x-axis, y-axis, title
   labs(title = "COVID-19 Test Results at CHOP:\n First 107 Days of the Pandemic",
        x = "Pandemic Day",
        y = "Total Number of Tests") +
