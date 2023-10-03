@@ -7,7 +7,7 @@ output:
     toc: yes
     toc_depth: 2
     toc_float: yes
-    fig_height: 4.5
+    fig_height: 6
     fig_width: 8
   pdf_document:
     fig_height: 3.5
@@ -61,12 +61,11 @@ plot_a <- ggplot(covid, aes(x = pan_day, fill = result)) +
   # Make a stacked bar plot of the test results by day
   geom_bar(stat = "count", position = "stack") +
   # Change the colors using the following hex code colors: #1f77b4, #e377c2 and #2ca02c
-  scale_fill_manual(values=c("#1f77b4", "#e377c2","#2ca02c")) +
+  scale_fill_manual(values = c("#1f77b4", "#e377c2","#2ca02c"), name = "Result") +
   # Change the labels on the x-axis, y-axis, title, and legend
   labs(title = "COVID-19 Test Results at CHOP:\n First 107 Days of the Pandemic",
        x = "Pandemic Day",
        y = "Total Number of Tests") +
-  scale_fill_discrete(name = "Result") + # Change the legend title
   # Use theme_minimal() to remove the gray background
   theme_minimal() +
   # Use theme() to center the title
