@@ -1,6 +1,6 @@
 ---
 title: "ds-lab1"
-author: "Keyi Kang"
+author: "Jialin Gao, Keyi Kang, Yifan Lu"
 date: "2023-10-02"
 output:
   html_document:
@@ -23,14 +23,14 @@ library(ggpubr)
 ```
 
 ```{r}
-covid_testing
+head(covid_testing)
 ```
 
 ```{r}
 covid <- covid_testing %>% 
   filter(test_id == "covid") %>% 
   mutate(result = str_to_title(result))
-covid
+head(covid)
 ```
 
 
@@ -38,7 +38,7 @@ covid
 covid_summary <- covid %>% 
   group_by(pan_day) %>% 
   summarise(percent_positive = sum(result == "Positive")/length(result))
-covid_summary
+head(covid_summary)
 ```
 
 ```{r}
@@ -53,7 +53,7 @@ covid_ages <- covid %>%
     age >= 51 & age <= 60 ~ '51-60',
     age >= 61 ~ '61+')
     )
-covid_ages
+head(covid_ages)
 ```
 ### Plot A
 ```{r}
@@ -78,7 +78,8 @@ plot_a <- ggplot(covid, aes(x = pan_day, fill = result)) +
   annotate("text", x = 60, y = 300, label = "Highest Number of\nPositive Tests (20)\non Day 79", 
            size = 3) 
 
-plot_a
+# Print the Plot A
+print(plot_a)
 ```
 
 ### Plot B:
@@ -96,7 +97,7 @@ plot_b <- ggplot(covid_summary, aes(x=pan_day, y=percent_positive)) +
         legend.position = "none"  # Remove the legend
         )
 
-# Print the plot
+# Print the Plot B
 print(plot_b)
 ```
 
@@ -118,7 +119,7 @@ plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
     y = "Number of\nPositive Tests"
   )
 
-# Print Plot C
+# Print the Plot C
 print(plot_c)
 ```
 
