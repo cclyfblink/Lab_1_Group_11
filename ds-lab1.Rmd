@@ -18,6 +18,8 @@ output:
 ```{r,echo=FALSE}
 library(medicaldata)
 library(tidyverse)
+library(scales)
+library(ggpubr)
 ```
 
 ```{r}
@@ -43,20 +45,44 @@ covid_summary
 covid_ages <- covid %>% 
   filter(result == "Positive") %>% 
   mutate(AgeGroup = case_when(
-    age >= 0  & age < 10 ~ '0-10',
-    age >= 11 & age < 20 ~ '11-20',
-    age >= 21 & age < 30 ~ '21-30',
-    age >= 31 & age < 40 ~ '31-40',
-    age >= 41 & age < 50 ~ '41-50',
-    age >= 51 & age < 60 ~ '51-60',
+    age >= 0  & age <= 10 ~ '0-10',
+    age >= 11 & age <= 20 ~ '11-20',
+    age >= 21 & age <= 30 ~ '21-30',
+    age >= 31 & age <= 40 ~ '31-40',
+    age >= 41 & age <= 50 ~ '41-50',
+    age >= 51 & age <= 60 ~ '51-60',
     age >= 61 ~ '61+')
     )
 covid_ages
 ```
-### Plot2:
+### Plot A
 ```{r}
-library(scales) # Load scales to convert y-axis into percentage
+plot_a <- ggplot(covid, aes(x = pan_day, fill = result)) + 
+  # Make a stacked bar plot of the test results by day
+  geom_bar(stat = "count", position = "stack") +
+  # Change the colors using the following hex code colors: #1f77b4, #e377c2 and #2ca02c
+  scale_fill_manual(values=c("#1f77b4", "#e377c2","#2ca02c")) +
+  # Change the labels on the x-axis, y-axis, title, and legend
+  labs(title = "COVID-19 Test Results at CHOP:\n First 107 Days of the Pandemic",
+       x = "Pandemic Day",
+       y = "Total Number of Tests") +
+  # Use theme_minimal() to remove the gray background
+  theme_minimal() +
+  # Use theme() to center the title
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "bottom") +
+  # Use geom_segment() and annotate() to draw the arrow and write text on the plot
+  geom_segment(aes(x = 60, y = 260, xend = 79, yend = 20),
+               arrow = arrow(type = "open", length = unit(0.1, "inches"))) +
+  # Add text annotation using annotate()
+  annotate("text", x = 60, y = 300, label = "Highest Number of\nPositive Tests (20)\non Day 79", 
+           size = 3) 
 
+plot_a
+```
+
+### Plot B:
+```{r}
 # Create a bar plot using ggplot
 plot_b <- ggplot(covid_summary, aes(x=pan_day, y=percent_positive)) +
   geom_bar(stat="identity", fill = "#2ca02c") +
@@ -74,10 +100,9 @@ plot_b <- ggplot(covid_summary, aes(x=pan_day, y=percent_positive)) +
 print(plot_b)
 ```
 
-### Plot3:
-```{r}
-library(ggplot2)
 
+### Plot C:
+```{r}
 # Create a bar plot using the covid_ages dataframe
 plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
   geom_bar(fill = "#2ca02c") +  # Change bar colors to #2ca02c
@@ -88,11 +113,21 @@ plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
     axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels
   ) +
   labs(
-    title = "Positive Tests by Age Group",
+    title = "Positive Tests\n by Age Group",
     x = "Age",
-    y = "Number of Positive Tests"
+    y = "Number of\nPositive Tests"
   )
 
 # Print Plot C
 print(plot_c)
 ```
+
+
+```{r}
+ggarrange(plot_a,
+          ggarrange(plot_b, plot_c, ncol = 2, labels = c("B", "C")),
+          nrow = 2,
+          labels = "A",
+          common.legend = TRUE)
+```
+
