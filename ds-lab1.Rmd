@@ -15,6 +15,8 @@ output:
   word_document:
     toc: no
 ---
+link：https://github.com/cclyfblink/Lab_1_Group_11.git
+
 ```{r,echo=FALSE}
 library(medicaldata)
 library(tidyverse)
@@ -22,13 +24,11 @@ library(scales)
 library(ggpubr)
 ```
 
-
 ```{r}
 covid <- covid_testing %>% 
   filter(test_id == "covid") %>% 
   mutate(result = str_to_title(result))
 ```
-
 
 ```{r}
 covid_summary <- covid %>% 
@@ -50,32 +50,7 @@ covid_ages <- covid %>%
     )
 ```
 
-### Plot A
-```{r}
-plot_a <- ggplot(covid, aes(x = pan_day, fill = result)) + 
-  # Make a stacked bar plot of the test results by day
-  geom_bar(stat = "count", position = "stack") +
-  # Change the colors using the following hex code colors: #1f77b4, #e377c2 and #2ca02c, and change the legend's title
-  scale_fill_manual(values = c("#1f77b4", "#e377c2","#2ca02c"), 
-                    name = "Test Result") +
-  # Change the labels on the x-axis, y-axis, title
-  labs(title = "COVID-19 Test Results at CHOP:\n First 107 Days of the Pandemic",
-       x = "Pandemic Day",
-       y = "Total Number of Tests") +
-  # Use theme_minimal() to remove the gray background
-  theme_minimal() +
-  # Use theme() to center the title
-  theme(plot.title = element_text(hjust = 0.5)) +
-  # Use geom_segment() and annotate() to draw the arrow and write text on the plot
-  geom_segment(aes(x = 60, y = 250, xend = 79, yend = 20),
-               arrow = arrow(type = "open", length = unit(0.1, "inches"))) +
-  # Add text annotation using annotate()
-  annotate("text", x = 60, y = 300, label = "Highest Number of\nPositive Tests (20)\non Day 79", 
-           size = 3) 
 
-# Print the Plot A
-print(plot_a)
-```
 
 ### Plot B:
 ```{r}
