@@ -15,6 +15,7 @@ output:
   word_document:
     toc: no
 ---
+
 link：https://github.com/cclyfblink/Lab_1_Group_11.git
 
 ```{r,echo=FALSE, include=FALSE}
@@ -24,21 +25,26 @@ library(scales)
 library(ggpubr)
 ```
 
+### Data wrangling
 ```{r}
 covid <- covid_testing %>% 
-  filter(test_id == "covid") %>% 
-  mutate(result = str_to_title(result))
-```
+  # Filter the data for only COVID tests
+  filter(test_id == "covid") %>%
+  # Change the test results to all start with capital letters
+  mutate(result = str_to_title(result)) 
 
-```{r}
+# Create a new dataframe: covid_summarygit push origin main
 covid_summary <- covid %>% 
-  group_by(pan_day) %>% 
-  summarise(percent_positive = sum(result == "Positive")/length(result))
-```
+  # Group by pan_day variable 
+  group_by(pan_day) %>%
+  # Calculate the percent of positive tests per day
+  summarise(percent_positive = sum(result == "Positive")/length(result)) 
 
-```{r}
+# Create a new dataframe: covid_ages
 covid_ages <- covid %>% 
+  # Filters the data for only positive test results
   filter(result == "Positive") %>% 
+  # Creates a variable for age categories
   mutate(AgeGroup = case_when(
     age >= 0  & age <= 10 ~ '0-10',
     age >= 11 & age <= 20 ~ '11-20',
@@ -118,7 +124,7 @@ plot_c <- ggplot(covid_ages, aes(x = AgeGroup)) +
 print(plot_c)
 ```
 
-# Putting the plots together
+### Putting the plots together
 ```{r}
 #Use ggpubr::ggarrange to arrange the plots
 ggarrange(plot_a, 
@@ -128,6 +134,6 @@ ggarrange(plot_a,
           labels = "A",
           #Create a common legend and put this at the bottom of the plot
           common.legend = TRUE,
-          legend = "bottom")
+          legend = "bottom") # Adjust the legend to the bottom
 ```
 
